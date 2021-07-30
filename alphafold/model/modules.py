@@ -17,11 +17,6 @@
 The structure generation code is in 'folding.py'.
 """
 import functools
-
-import haiku as hk
-import jax
-import jax.numpy as jnp
-
 from alphafold.common import residue_constants
 from alphafold.model import all_atom
 from alphafold.model import common_modules
@@ -32,6 +27,9 @@ from alphafold.model import mapping
 from alphafold.model import prng
 from alphafold.model import quat_affine
 from alphafold.model import utils
+import haiku as hk
+import jax
+import jax.numpy as jnp
 
 
 def softmax_cross_entropy(logits, labels):
@@ -237,6 +235,10 @@ class AlphaFoldIteration(hk.Module):
         continue
       else:
         ret[name] = module(representations, batch, is_training)
+        if 'representations' in ret[name]:
+          # Extra representations from the head. Used by the structure module
+          # to provide activations for the PredictedLDDTHead.
+          representations.update(ret[name].pop('representations'))
       if compute_loss:
         total_loss += loss(module, head_config, ret, name)
 
