@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ARG CUDA=11.0
-FROM nvidia/cuda:${CUDA}-cudnn8-runtime-ubuntu16.04
+FROM nvidia/cuda:${CUDA}-cudnn8-runtime-ubuntu18.04
 # FROM directive resets ARGS, so we specify again (the value is retained if
 # previously set).
 ARG CUDA
@@ -42,7 +42,7 @@ RUN git clone --branch v3.3.0 https://github.com/soedinglab/hh-suite.git /tmp/hh
     && popd \
     && rm -rf /tmp/hh-suite
 
-# Install Miniconda package manger.
+# Install Miniconda package manager.
 RUN wget -q -P /tmp \
   https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
     && bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda \
